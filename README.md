@@ -22,6 +22,8 @@ Just run  `TrayTemperature.exe` and a tray icon will be added displaying the CPU
 
 The application requires elevated priviledges in order to properly acquire the sensor data.
 
+.NET Framework 4.6.1 is required.
+
 # Customization
 
 To customize the temperature ranges and their different colors, edit the following section in the `TrayTemperature.exe.config` file:
