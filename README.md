@@ -4,6 +4,8 @@ A very simple CPU and GPU temperature monitor for the system tray.
 
 ![TrayTemperature](https://i.imgur.com/pwWbuCm.jpg)
 
+A lot of other softwares already provide this functionality, but I wanted something very specific without any additional user interface.
+
 # Features
 
 * Minimalistic text display, matching default Windows 10 tray icon style
