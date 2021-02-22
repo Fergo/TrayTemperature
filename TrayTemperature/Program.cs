@@ -1,28 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
-
-using OpenHardwareMonitor.Hardware;
 using System.Text;
 using System.Reflection;
 
+using OpenHardwareMonitor.Hardware;
+
 namespace TrayTemperature {
 	static class Program {
-
-		static Computer computer = new Computer() { CPUEnabled = true, GPUEnabled = true };
 		static int CPU = 0, GPU = 0, CPUMax = 0, GPUMax = 0, CPUMin = 99999, GPUMin = 99999;
 		static ulong CPUAcc = 0, GPUAcc = 0, regCount = 0;
 		static bool isLogging = false;
+
+		static Computer computer = new Computer() { CPUEnabled = true, GPUEnabled = true };
 		static Timer tmr;
 		static NotifyIcon ni;
 		static ContextMenu contextMenu;
 		static StreamWriter sw;
-
-
 
 		[STAThread]
 		static void Main() {
@@ -44,7 +40,6 @@ namespace TrayTemperature {
 
 			//Setup context menu
 			contextMenu = new ContextMenu();
-
 			contextMenu.MenuItems.AddRange(new MenuItem[] {
 				new MenuItem {
 					Text = "TrayTemperature",
@@ -90,6 +85,7 @@ namespace TrayTemperature {
 				},
 			});
 
+			//Refresh rate context sub-menus
 			MenuItem refreshMenu = contextMenu.MenuItems.Find("menRefresh", false).First();
 			refreshMenu.MenuItems.AddRange(new MenuItem[] {
 				new MenuItem { Name = "1", Text = "1s" },
@@ -101,6 +97,7 @@ namespace TrayTemperature {
 				new MenuItem { Name = "60", Text = "60s" }
 			});
 
+			//Check the correct refresh rate MenuItem based on saved settings
 			refreshMenu.MenuItems.Find(Properties.Settings.Default.Refresh.ToString(), false).First().Checked = true;
 
 			//Add event listeners to the menus
@@ -110,7 +107,7 @@ namespace TrayTemperature {
 			foreach (MenuItem menuItem in refreshMenu.MenuItems)
 				menuItem.Click += menuRefresh_Click; ;
 
-
+			//Check either Celsius or Fahrenheit based on saved settings
 			if (Properties.Settings.Default.Celsius) {
 				contextMenu.MenuItems.Find("menCel", false).First().Checked = true;
 				contextMenu.MenuItems.Find("menFah", false).First().Checked = false;
@@ -118,7 +115,6 @@ namespace TrayTemperature {
 				contextMenu.MenuItems.Find("menCel", false).First().Checked = false;
 				contextMenu.MenuItems.Find("menFah", false).First().Checked = true;
 			}
-
 
 			//Setup tray icon
 			ni = new NotifyIcon {
@@ -147,6 +143,7 @@ namespace TrayTemperature {
 			//Check current
 			clicked.Checked = true;
 
+			//Update program settings
 			Properties.Settings.Default.Refresh = Convert.ToInt32(clicked.Name);
 			tmr.Interval = Properties.Settings.Default.Refresh * 1000;
 			
@@ -158,14 +155,12 @@ namespace TrayTemperature {
 				case "menCel":
 					Properties.Settings.Default.Celsius = true;
 
-					//Swap checked mark
 					contextMenu.MenuItems.Find("menCel", false).First().Checked = true;
 					contextMenu.MenuItems.Find("menFah", false).First().Checked = false;
 					break;
 				case "menFah":
 					Properties.Settings.Default.Celsius = false;
 
-					//Swap checked mark
 					contextMenu.MenuItems.Find("menCel", false).First().Checked = false;
 					contextMenu.MenuItems.Find("menFah", false).First().Checked = true;
 					break;
@@ -180,16 +175,19 @@ namespace TrayTemperature {
 						if (MessageBox.Show("Starting a log will reset the current average, minimum and maximum temperatures. Proceed?", "Log start", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
 							return;
 
+						//Create a temp file to register temperatures at each timestamp. This will be concatenated with the statistics file when the log ends
 						sw = new StreamWriter(string.Format("temp.log", DateTime.Now), false);
 						sw.WriteLine("DateTime,CPU Temperature,GPU Temperature");
 
+						//Reset all statistics
 						CPUMax = 0; GPUMax = 0;	CPUAcc = 0; GPUAcc = 0; regCount = 0; CPUMin = 99999; GPUMin = 99999;
 
-						contextMenu.MenuItems.Find("menLog", false).First().Checked = true;
 						isLogging = true;
 
+						//Disable unit change while logging
 						contextMenu.MenuItems.Find("menCel", false).First().Enabled = false;
 						contextMenu.MenuItems.Find("menFah", false).First().Enabled = false;
+						contextMenu.MenuItems.Find("menLog", false).First().Checked = true;
 					} else {
 						sw.Close();
 						sw = null;
@@ -201,26 +199,31 @@ namespace TrayTemperature {
 						sb.AppendLine(string.Format("GPU,{0:F2},{1},{2}", (float)GPUAcc / regCount, GPUMin, GPUMax));
 						sb.AppendLine("");
 
-						//Append the summary table with the temp timeseries
+						//Append the summary table with the temp timeseries and remove the temp log
 						string fileName = string.Format("{0:yyyy-MM-dd_hh-mm-ss}.log", DateTime.Now);
 						File.WriteAllText(fileName, sb.ToString() + File.ReadAllText("temp.log"));
 						File.Delete("temp.log");
+
 						MessageBox.Show("Log saved to:\r\n\r\n" + Path.Combine(Application.ExecutablePath, fileName), "Log saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-						contextMenu.MenuItems.Find("menLog", false).First().Checked = false;
 						isLogging = false;
 
+						//Enable unit when logging ends
 						contextMenu.MenuItems.Find("menCel", false).First().Enabled = true;
 						contextMenu.MenuItems.Find("menFah", false).First().Enabled = true;
+						contextMenu.MenuItems.Find("menLog", false).First().Checked = false;
 					}
 					break;
 			}
 
+			//Ensure prompt update after the user selects something from the context menu
 			tmr_tick(null, null);
 		}
 
 		//Updates the temperatures
 		private static void tmr_tick(object sender, EventArgs e) {
+
+			//Updates the sensors on each hardware part
 			foreach (IHardware hardware in computer.Hardware) {
 				hardware.Update();
 
@@ -257,28 +260,25 @@ namespace TrayTemperature {
 			int convertedGPU = Convert.ToInt32(Properties.Settings.Default.Celsius ? GPU : GPU * 1.8 + 32);
 			string tempUnit = Properties.Settings.Default.Celsius ? "°C" : "°F";
 
+			//Calculate statistics. CPUAcc and GPUAcc will eventually overflow after around 5.8 billion years with 1s updates, so I guess there's no worry there...
 			CPUAcc += (ulong)convertedCPU;
 			GPUAcc += (ulong)convertedGPU;
 			regCount++;
 
 			if (CPU > CPUMax)
 				CPUMax = CPU;
-
 			if (CPU < CPUMin)
 				CPUMin = CPU;
-
 			if (GPU > GPUMax)
 				GPUMax = GPU;
-
 			if (GPU < GPUMin)
 				GPUMin = GPU;
 
 			//Appends a new line to the current log file (CSV format)
-			if (isLogging && sw != null) {
+			if (isLogging && sw != null)
 				sw.WriteLine(DateTime.Now.ToString() + "," + convertedCPU + "," + convertedGPU);
-			}
 
-			//Updates the icon and tooltip
+			//Updates the tooltip with the little hacky function
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine("CPU");
 			sb.AppendLine($"  Cur: {convertedCPU}{tempUnit}");
@@ -291,22 +291,23 @@ namespace TrayTemperature {
 			sb.AppendLine($"  Min: {GPUMin}{tempUnit}");
 			sb.AppendLine($"  Max: {GPUMax}{tempUnit}");
 
-			Fixes.SetNotifyIconText(ni, sb.ToString());
+			SetNotifyIconText(ni, sb.ToString());
 
+			//Updates the icon
 			ni.Icon = DynamicIcon.CreateIcon(convertedCPU.ToString() + tempUnit, cpuColor, convertedGPU.ToString() + tempUnit, gpuColor);
 		}
-	}
 
-	//Little hack to bypass the 63 char limit of the tooltip (still limited to the 128 chars of the original win32)
-	public class Fixes {
+		//Little hack to bypass the 63 char limit of the WinForms tooltip (still limited to the 127 chars of regular Win32 control)
 		public static void SetNotifyIconText(NotifyIcon ni, string text) {
-			if (text.Length >= 128) throw new ArgumentOutOfRangeException("Text limited to 127 characters");
+			if (text.Length >= 128)
+				throw new ArgumentOutOfRangeException("Text limited to 127 characters");
+
 			Type t = typeof(NotifyIcon);
 			BindingFlags hidden = BindingFlags.NonPublic | BindingFlags.Instance;
 			t.GetField("text", hidden).SetValue(ni, text);
+
 			if ((bool)t.GetField("added", hidden).GetValue(ni))
 				t.GetMethod("UpdateIcon", hidden).Invoke(ni, new object[] { true });
 		}
 	}
-
 }
