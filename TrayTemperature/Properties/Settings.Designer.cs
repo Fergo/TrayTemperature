@@ -23,123 +23,93 @@ namespace TrayTemperature.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#ffff00")]
         public string CPUMed {
             get {
                 return ((string)(this["CPUMed"]));
             }
-            set {
-                this["CPUMed"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#ffffff")]
         public string CPULow {
             get {
                 return ((string)(this["CPULow"]));
             }
-            set {
-                this["CPULow"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#ff0000")]
         public string CPUHigh {
             get {
                 return ((string)(this["CPUHigh"]));
             }
-            set {
-                this["CPUHigh"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("65")]
         public int CPUTempMed {
             get {
                 return ((int)(this["CPUTempMed"]));
             }
-            set {
-                this["CPUTempMed"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("80")]
         public int CPUTempHigh {
             get {
                 return ((int)(this["CPUTempHigh"]));
             }
-            set {
-                this["CPUTempHigh"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#ffffff")]
         public string GPULow {
             get {
                 return ((string)(this["GPULow"]));
             }
-            set {
-                this["GPULow"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#ffff00")]
         public string GPUMed {
             get {
                 return ((string)(this["GPUMed"]));
             }
-            set {
-                this["GPUMed"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#ff0000")]
         public string GPUHigh {
             get {
                 return ((string)(this["GPUHigh"]));
             }
-            set {
-                this["GPUHigh"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("70")]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
         public int GPUTempMed {
             get {
                 return ((int)(this["GPUTempMed"]));
             }
-            set {
-                this["GPUTempMed"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("85")]
         public int GPUTempHigh {
             get {
                 return ((int)(this["GPUTempHigh"]));
-            }
-            set {
-                this["GPUTempHigh"] = value;
             }
         }
         

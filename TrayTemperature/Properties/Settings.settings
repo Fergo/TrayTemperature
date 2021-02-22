@@ -1,35 +1,35 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HardwareMonitor.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TrayTemperature.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="CPUMed" Type="System.String" Scope="User">
+    <Setting Name="CPUMed" Type="System.String" Scope="Application">
       <Value Profile="(Default)">#ffff00</Value>
     </Setting>
-    <Setting Name="CPULow" Type="System.String" Scope="User">
+    <Setting Name="CPULow" Type="System.String" Scope="Application">
       <Value Profile="(Default)">#ffffff</Value>
     </Setting>
-    <Setting Name="CPUHigh" Type="System.String" Scope="User">
+    <Setting Name="CPUHigh" Type="System.String" Scope="Application">
       <Value Profile="(Default)">#ff0000</Value>
     </Setting>
-    <Setting Name="CPUTempMed" Type="System.Int32" Scope="User">
+    <Setting Name="CPUTempMed" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">65</Value>
     </Setting>
-    <Setting Name="CPUTempHigh" Type="System.Int32" Scope="User">
+    <Setting Name="CPUTempHigh" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">80</Value>
     </Setting>
-    <Setting Name="GPULow" Type="System.String" Scope="User">
+    <Setting Name="GPULow" Type="System.String" Scope="Application">
       <Value Profile="(Default)">#ffffff</Value>
     </Setting>
-    <Setting Name="GPUMed" Type="System.String" Scope="User">
+    <Setting Name="GPUMed" Type="System.String" Scope="Application">
       <Value Profile="(Default)">#ffff00</Value>
     </Setting>
-    <Setting Name="GPUHigh" Type="System.String" Scope="User">
+    <Setting Name="GPUHigh" Type="System.String" Scope="Application">
       <Value Profile="(Default)">#ff0000</Value>
     </Setting>
-    <Setting Name="GPUTempMed" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">70</Value>
+    <Setting Name="GPUTempMed" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">60</Value>
     </Setting>
-    <Setting Name="GPUTempHigh" Type="System.Int32" Scope="User">
+    <Setting Name="GPUTempHigh" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">85</Value>
     </Setting>
     <Setting Name="Celsius" Type="System.Boolean" Scope="User">

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HardwareMonitor")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("TrayTemperature")]
+[assembly: AssemblyDescription("Simple CPU and GPU temperature monitor")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("HardwareMonitor")]
+[assembly: AssemblyCompany("Fergo")]
+[assembly: AssemblyProduct("TrayTemperature")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

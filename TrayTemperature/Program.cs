@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OpenHardwareMonitor.Hardware;
 using System.Drawing;
 using System.IO;
+
+using OpenHardwareMonitor.Hardware;
 
 namespace TrayTemperature {
 	static class Program {
@@ -20,6 +21,8 @@ namespace TrayTemperature {
 
 		[STAThread]
 		static void Main() {
+			Properties.Settings.Default.Upgrade();
+
 			//Inititalize OpenHardwareMonitorLib
 			computer.Open();
 
@@ -27,6 +30,8 @@ namespace TrayTemperature {
 			tmr = new Timer {
 				Interval = Properties.Settings.Default.Refresh * 1000,
 				Enabled = true
+
+			
 			};
 
 			tmr.Tick += tmr_tick;
