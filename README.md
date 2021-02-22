@@ -14,6 +14,7 @@ Tons of other softwares already provide this functionality, but I wanted somethi
 * Customizable refresh interval 
 * Basic logging functionality
 * Celsius and Fahrenheit supported
+* Tooltip with statistics (average, minimum, maximum)
 
 # Usage
 
