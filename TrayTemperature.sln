@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1169
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HardwareMonitor", "HardwareMonitor\HardwareMonitor.csproj", "{C8DE5786-AD4E-41A4-B067-E691A044921D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrayTemperature", "TrayTemperature\TrayTemperature.csproj", "{C8DE5786-AD4E-41A4-B067-E691A044921D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
