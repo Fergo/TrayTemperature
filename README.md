@@ -9,7 +9,7 @@ Tons of other softwares already provide this functionality, but I wanted somethi
 # Features
 
 * Minimalistic text display, matching default Windows 10 tray icon style
-* Rreal-time CPU and GPU temperatures
+* Real-time CPU and GPU temperatures
 * Customizable text colors for each temperature range (low, mid high)
 * Customizable refresh interval 
 * Basic logging functionality
