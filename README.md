@@ -22,7 +22,7 @@ Just run  `TrayTemperature.exe` and a tray icon will be added displaying the CPU
 
 The application requires elevated priviledges in order to properly acquire the sensor data.
 
-.NET Framework 4.6.1 is required.
+.NET Framework 4.8 is required.
 
 # Customization
 
