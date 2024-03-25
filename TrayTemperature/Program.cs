@@ -151,7 +151,9 @@ namespace TrayTemperature {
 
 		//Handles context menu items click
 		private static void menu_Click(object sender, EventArgs e) {
-			switch (((MenuItem)sender).Name) {
+			String logFileName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+
+            switch (((MenuItem)sender).Name) {
 				case "menCel":
 					Properties.Settings.Default.Celsius = true;
 
@@ -176,7 +178,7 @@ namespace TrayTemperature {
 							return;
 
 						//Create a temp file to register temperatures at each timestamp. This will be concatenated with the statistics file when the log ends
-						sw = new StreamWriter(string.Format("temp.log", DateTime.Now), false);
+						sw = new StreamWriter(logFileName, false);
 						sw.WriteLine("DateTime,CPU Temperature,GPU Temperature");
 
 						//Reset all statistics
@@ -201,8 +203,8 @@ namespace TrayTemperature {
 
 						//Append the summary table with the temp timeseries and remove the temp log
 						string fileName = string.Format("{0:yyyy-MM-dd_hh-mm-ss}.log", DateTime.Now);
-						File.WriteAllText(fileName, sb.ToString() + File.ReadAllText("temp.log"));
-						File.Delete("temp.log");
+						File.WriteAllText(fileName, sb.ToString() + File.ReadAllText(logFileName));
+						File.Delete(logFileName);
 
 						MessageBox.Show("Log saved to:\r\n\r\n" + Path.Combine(Application.ExecutablePath, fileName), "Log saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -280,22 +282,16 @@ namespace TrayTemperature {
 
 			//Updates the tooltip with the little hacky function
 			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("CPU");
-			sb.AppendLine($"  Cur: {convertedCPU}{tempUnit}");
-			sb.AppendLine($"  Avg: {(float)CPUAcc / regCount:F2}{tempUnit}");
-			sb.AppendLine($"  Min: {CPUMin}{tempUnit}");
-			sb.AppendLine($"  Max: {CPUMax}{tempUnit}");
-			sb.AppendLine("GPU");
-			sb.AppendLine($"  Cur: {convertedGPU}{tempUnit}");
-			sb.AppendLine($"  Avg: {(float)GPUAcc / regCount:F2}{tempUnit}");
-			sb.AppendLine($"  Min: {GPUMin}{tempUnit}");
-			sb.AppendLine($"  Max: {GPUMax}{tempUnit}");
+			sb.AppendLine($"CPU: Avg {(float)CPUAcc / regCount:F2}{tempUnit} Min: {CPUMin} Max: {CPUMax}");
+			sb.Append($"GPU: Avg {(float)GPUAcc / regCount:F2}{tempUnit} Min: {GPUMin} Max: {GPUMax}");
 
 			SetNotifyIconText(ni, sb.ToString());
 
-			//Updates the icon
-			ni.Icon = DynamicIcon.CreateIcon(convertedCPU.ToString() + tempUnit, cpuColor, convertedGPU.ToString() + tempUnit, gpuColor);
-		}
+            //Updates the icon
+            Icon newIcon = DynamicIcon.CreateIcon(convertedCPU.ToString() + tempUnit, cpuColor, convertedGPU.ToString() + tempUnit, gpuColor);
+			ni.Icon = newIcon;
+            DynamicIcon.DestroyIcon(newIcon.Handle);
+        }
 
 		//Little hack to bypass the 63 char limit of the WinForms tooltip (still limited to the 127 chars of regular Win32 control)
 		public static void SetNotifyIconText(NotifyIcon ni, string text) {
